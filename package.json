@@ -1,7 +1,7 @@
 {
   "name": "react-auto-router",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "A plugin to create router elegantly",
   "author": {
@@ -25,15 +25,36 @@
     "cleanup": "soy cleanup",
     "commit": "soy git-commit",
     "lint": "eslint . --fix",
-    "prepare": "pnpm -r run stub && pnpm simple-git-hooks",
     "publish-pkg": "pnpm -r publish --access public",
     "release": "pnpm soy release",
+    "stub": "pnpm -r --parallel run stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "update-pkg": "soy ncu"
   },
+  "dependencies": {
+    "consola": "3.2.3",
+    "gradient-string": "2.0.2",
+    "prettier": "3.3.3",
+    "recast": "0.23.9",
+    "micromatch": "4.0.7",
+    "magicast": "0.3.4",
+    "unplugin": "1.12.0"
+  },
   "devDependencies": {
-    "@soybeanjs/cli": "^1.0.19",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "@types/gradient-string": "^1.1.6",
+    "@types/micromatch": "4.0.9",
+    "@types/node": "20.14.12",
+    "react-router-dom": "6.25.1",
+    "@soybeanjs/cli": "1.0.19",
+    "unbuild": "2.0.0",
+    "typescript": "5.5.4",
+    "vite": "5.3.5"
+  },
+  "simple-git-hooks": {
+    "commit-msg": "pnpm soy git-commit-verify",
+    "pre-commit": "pnpm typecheck && pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }
