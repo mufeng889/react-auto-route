@@ -20,7 +20,7 @@
   "homepage": "https://github.com/soybeanjs/elegant-router",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "pnpm typecheck && pnpm unbuild",
     "preview": "vite preview",
     "cleanup": "soy cleanup",
     "commit": "soy git-commit",
