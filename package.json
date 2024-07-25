@@ -1,0 +1,39 @@
+{
+  "name": "react-auto-router",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A plugin to create router elegantly",
+  "author": {
+    "name": "Ohh",
+    "email": "soybeanjs@outlook.com",
+    "url": "https://github.com/mufeng889"
+  },
+  "contributors": [
+    {
+      "name": "Soybean",
+      "email": "soybeanjs@outlook.com",
+      "url": "https://github.com/soybeanjs"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/soybeanjs/elegant-router",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "cleanup": "soy cleanup",
+    "commit": "soy git-commit",
+    "lint": "eslint . --fix",
+    "prepare": "pnpm -r run stub && pnpm simple-git-hooks",
+    "publish-pkg": "pnpm -r publish --access public",
+    "release": "pnpm soy release",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "update-pkg": "soy ncu"
+  },
+  "devDependencies": {
+    "@soybeanjs/cli": "^1.0.19",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.4"
+  }
+}
