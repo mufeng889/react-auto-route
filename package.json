@@ -1,6 +1,6 @@
 {
   "name": "@ohh/react-auto-route",
-  "private": true,
+  "private": false,
   "version": "0.2.1",
   "type": "module",
   "description": "A plugin to create router elegantly",
@@ -18,12 +18,12 @@
     }
   ],
   "license": "MIT",
-  "homepage": "https://github.com/soybeanjs/elegant-router",
+  "homepage": "https://github.com/mufeng889/react-auto-route",
   "repository": {
-    "url": "https://github.com/mufeng889/react-soybean-admin.git"
+    "url": "https://github.com/mufeng889/react-auto-route.git"
   },
   "bugs": {
-    "url": "https://github.com/mufeng889/react-soybean-admin/issues"
+    "url": "https://github.com/mufeng889/react-auto-route/issues"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
@@ -62,15 +62,10 @@
   "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
-      "*": [
-        "./dist/*",
-        "./*"
-      ]
+      "*": ["./dist/*","./*"]
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite",
     "build": "pnpm typecheck && pnpm unbuild",
@@ -79,9 +74,9 @@
     "cleanup": "soy cleanup",
     "commit": "soy git-commit",
     "lint": "eslint . --fix",
-    "publish-pkg": "pnpm -r publish --access public",
+    "publish-pkg": "pnpm -r publish --access public --no-git-checks",
     "release": "pnpm soy release",
-    "stub": "pnpm -r --parallel run stub",
+    "stub": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "update-pkg": "soy ncu"
   },
