@@ -1,7 +1,7 @@
 {
   "name": "@ohh/react-auto-route",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "A plugin to create router elegantly",
   "packageManager": "pnpm@9.1.1",
