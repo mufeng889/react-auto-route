@@ -1,5 +1,5 @@
 {
-  "name": "react-auto-router",
+  "name": "@ohh/react-auto-route",
   "private": true,
   "version": "0.2.0",
   "type": "module",
@@ -7,7 +7,7 @@
   "packageManager": "pnpm@9.1.1",
   "author": {
     "name": "Ohh",
-    "email": "soybeanjs@outlook.com",
+    "email": "1509326266@qq.com",
     "url": "https://github.com/mufeng889"
   },
   "contributors": [
