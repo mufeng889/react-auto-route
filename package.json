@@ -4,6 +4,7 @@
   "version": "0.1.1",
   "type": "module",
   "description": "A plugin to create router elegantly",
+  "packageManager": "pnpm@9.1.1",
   "author": {
     "name": "Ohh",
     "email": "soybeanjs@outlook.com",
@@ -61,13 +62,19 @@
   "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
-      "*": ["./dist/*", "./*"]
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "pnpm typecheck && pnpm unbuild",
+    "build:tsup": "tsup  --minify",
     "preview": "vite preview",
     "cleanup": "soy cleanup",
     "commit": "soy git-commit",
@@ -79,22 +86,24 @@
     "update-pkg": "soy ncu"
   },
   "dependencies": {
+    "chokidar": "3.6.0",
     "consola": "3.2.3",
     "gradient-string": "2.0.2",
+    "magicast": "0.3.4",
+    "micromatch": "4.0.7",
     "prettier": "3.3.3",
     "recast": "0.23.9",
-    "micromatch": "4.0.7",
-    "magicast": "0.3.4",
     "unplugin": "1.12.0"
   },
   "devDependencies": {
+    "@soybeanjs/cli": "1.0.19",
     "@types/gradient-string": "^1.1.6",
     "@types/micromatch": "4.0.9",
     "@types/node": "20.14.12",
     "react-router-dom": "6.25.1",
-    "@soybeanjs/cli": "1.0.19",
-    "unbuild": "2.0.0",
+    "tsup": "8.2.3",
     "typescript": "5.5.4",
+    "unbuild": "2.0.0",
     "vite": "5.3.5"
   },
   "simple-git-hooks": {
