@@ -1,7 +1,7 @@
 {
   "name": "@ohh/react-auto-route",
   "private": false,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "type": "module",
   "description": "A plugin to create router elegantly",
   "packageManager": "pnpm@9.1.1",
@@ -62,10 +62,15 @@
   "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
-      "*": ["./dist/*","./*"]
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "pnpm typecheck && pnpm unbuild",

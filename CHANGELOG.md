@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.2](https://github.com/mufeng889/react-auto-route/compare/v0.2.1...v0.2.2) (2024-07-27)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **package**: update homepage &nbsp;-&nbsp; by **wang** [<samp>(0fdbf)</samp>](https://github.com/mufeng889/react-auto-route/commit/0fdbfa1)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.1](https://github.com/mufeng889/react-auto-route/compare/v0.2.0...v0.2.1) (2024-07-27)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
