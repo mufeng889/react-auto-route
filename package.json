@@ -1,6 +1,5 @@
 {
-  "name": "@ohh/react-auto-route",
-  "private": false,
+  "name": "@ohh-889/react-auto-route",
   "version": "0.2.2",
   "type": "module",
   "description": "A plugin to create router elegantly",
