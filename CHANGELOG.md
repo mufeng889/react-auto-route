@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [v0.2.3](https://github.com/mufeng889/react-auto-route/compare/v0.2.2...v0.2.3) (2024-07-27)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **package**: update plugin name &nbsp;-&nbsp; by **wang** [<samp>(c9080)</samp>](https://github.com/mufeng889/react-auto-route/commit/c90803a)
+- **projects**: adaptation react-soybean-admin framework &nbsp;-&nbsp; by **wang** [<samp>(68932)</samp>](https://github.com/mufeng889/react-auto-route/commit/689327d)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.2](https://github.com/mufeng889/react-auto-route/compare/v0.2.1...v0.2.2) (2024-07-27)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
