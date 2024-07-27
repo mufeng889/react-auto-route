@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.4](https://github.com/mufeng889/react-auto-route/compare/v0.2.3...v0.2.4) (2024-07-28)
+
+### &nbsp;&nbsp;&nbsp;📖 Documentation
+
+- **ReadMe**: add zh_CN README &nbsp;-&nbsp; by **wang** [<samp>(0a82a)</samp>](https://github.com/mufeng889/react-auto-route/commit/0a82a8f)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.3](https://github.com/mufeng889/react-auto-route/compare/v0.2.2...v0.2.3) (2024-07-27)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
