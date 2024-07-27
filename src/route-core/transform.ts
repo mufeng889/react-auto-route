@@ -63,7 +63,7 @@ export function transformElegantRoutesToReactRoutes(
  * @param layouts layout components
  * @param views view components
  */
-function transformElegantRouteToReactRoute(
+export function transformElegantRouteToReactRoute(
   route: ElegantConstRoute,
   layouts: Record<string, LazyRouteFunction<CustomRouteObject>>,
   views: Record<string,LazyRouteFunction<CustomRouteObject>>
