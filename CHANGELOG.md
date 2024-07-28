@@ -1,6 +1,21 @@
 # Changelog
 
 
+## [v0.2.5](https://github.com/mufeng889/react-auto-route/compare/v0.2.4...v0.2.5) (2024-07-28)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **package**: add keywords &nbsp;-&nbsp; by **wang** [<samp>(5a386)</samp>](https://github.com/mufeng889/react-auto-route/commit/5a38670)
+
+### &nbsp;&nbsp;&nbsp;📖 Documentation
+
+- **README**: improve  README &nbsp;-&nbsp; by **wang** [<samp>(8e63f)</samp>](https://github.com/mufeng889/react-auto-route/commit/8e63f4f)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.4](https://github.com/mufeng889/react-auto-route/compare/v0.2.3...v0.2.4) (2024-07-28)
 
 ### &nbsp;&nbsp;&nbsp;📖 Documentation
