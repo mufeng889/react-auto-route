@@ -13,7 +13,7 @@ The main difference between ElegantRouter and other file system-based routing to
 1. Other tools have complex configuration rules, and the route data is a black box, which is difficult to customize.
 2. ElegantRouter follows the api-first principle and automates the process of configuring routes.
 
-Taking configuring Vue routes as an example, the traditional way of creating page routes requires the following steps:
+Taking configuring react routes as an example, the traditional way of creating page routes requires the following steps:
 
 1. Import the layout component
 2. Import the page component
@@ -28,11 +28,76 @@ You only need to create a route file according to the agreed rules to generate t
 
 ## Installation
 
-### Install the Vue version (other frameworks to come...)
+### Install the react version (other frameworks to come...)
 
 ```bash
-pnpm install @elegant-router/vue
+pnpm install @ohh-889/react-auto-route
 ```
+
+## Attention item
+
+### `react-router-dom`
+
+- Versions that require installation above 'v6' are not compatible with the lower version of 'react-router-dom'
+
+### Lazy loading by route
+
+- Page routing
+
+``` ts
+
+export function Component() {
+  return <div>Component</div>;
+}
+
+```
+- Be sure to export with 'export' as the function name 'Component'
+
+#### If you want to use the default export
+
+**1. Override the lazy method**
+
+```tsx
+lazy:async ()=>{
+ const component=await import('@/views/Component.tsx')
+
+ return {
+  Component:component.default
+  ErrorBoundary:ErrorBoundary,
+ }
+//  or you can use the following code
+const Component=component.default
+return {
+  element:<Component />,
+  ErrorBoundary:ErrorBoundary,
+}
+}
+```
+- If you use ts, change the ts type declaration
+
+
+**2. Handle route lazy loading by yourself**
+
+- Use an 'option' of the route loader
+
+`optsunstable_datastrategy`
+
+- [related links](https://reactrouter.com/en/main/routers/create-browser-router#optsunstable_datastrategy) 
+
+
+## Best practice
+
+
+- **react-soybean-admin**
+  - [Preview address](https://github.com/mufeng889/react-soybean-admin)
+
+- **Source of inspiration**
+
+  - [elegant-router](https://github.com/soybeanjs/elegant-router)
+
+> **elegant-router best practice**
+> `soybean-admin` [Preview address](https://github.com/soybeanjs/soybean-admin)
+> - This is a 'vue' technology stack back-end management system project
 
 ## Use
 
@@ -41,19 +106,19 @@ pnpm install @elegant-router/vue
 ```ts
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import ElegantVueRouter from "@elegant-router/vue/vite";
+import react from "@vitejs/plugin-react";
+import ElegantVueRouter from "@@ohh-889/react-auto-route";
 
 export default defineConfig({
   plugins: [
-    vue(),
-    ElegantVueRouter({
+    react(),
+    ElegantreactRouter({
       alias: {
         "@": "src",
       },
       layouts: {
-        base: "src/layouts/base-layout/index.vue",
-        blank: "src/layouts/blank-layout/index.vue",
+        base: "src/layouts/base-layout/index.tsx",
+        blank: "src/layouts/blank-layout/index.tsx",
       },
     }),
   ],
@@ -65,7 +130,7 @@ export default defineConfig({
 });
 ```
 
-### Integration in Vue Router
+### Integration in react Router
 
 **src/router/routes/index.ts**
 
@@ -73,26 +138,24 @@ export default defineConfig({
 import type { ElegantRoute, CustomRoute } from "@elegant-router/types";
 import { generatedRoutes } from "../elegant/routes";
 import { layouts, views } from "../elegant/imports";
-import { transformElegantRoutesToVueRoutes } from "../elegant/transform";
+import { transformElegantRoutesToReactRoutes } from "../elegant/transform";
 
 const customRoutes: CustomRoute[] = [
   {
     name: "root",
     path: "/",
-    redirect: {
-      name: "403",
-    },
+    redirectTo: '/home',
   },
   {
     name: "not-found",
-    path: "/:pathMatch(.*)*",
-    component: "layout.base$view.404",
+    path: "*",
+    component: "$view.404",
   },
 ];
 
 const elegantRoutes: ElegantRoute[] = [...customRoutes, ...generatedRoutes];
 
-export const routes = transformElegantRoutesToVueRoutes(
+export const routes = transformElegantRoutesToreactRoutes(
   elegantRoutes,
   layouts,
   views
@@ -102,15 +165,23 @@ export const routes = transformElegantRoutesToVueRoutes(
 **src/router/index.ts**
 
 ```ts
-import { createRouter, createWebHistory } from "vue-router";
+import {createBrowserRouter} from 'react-router-dom'
 import { routes } from "./routes";
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-});
+export const router=createBrowserRouter(builtinRoutes)
+```
 
-export default router;
+
+**src/App.tsx**
+
+```ts
+import { RouterProvider } from 'react-router-dom';
+import { router } from "@/router";
+
+const App = () => {
+  return <RouterProvider router={reactRouter} />
+}
+
 ```
 
 ### Starting the project
@@ -123,10 +194,10 @@ After starting the project, the plugin will automatically generate the src/route
 
 You can configure `pagePatterns` to specify the rules for creating route files. The rules for creating route files are regular expressions, and if the path of a route file matches the regular expression, the route file will be created.
 
-Default: all files named `index.vue`、`[id].vue`、`[module].vue`, etc. below the folder.
+Default: all files named `index.tsx`、`[id].tsx`、`[module].tsx`, etc. below the folder.
 
 ```ts
-pagePatterns: ["**‍/index.vue", "**‍/[[]*[]].vue"];
+pagePatterns: ["**‍/index.tsx", "**‍/[[]*[]].tsx"];
 ```
 
 ### One-level route (single-level route)
@@ -136,7 +207,7 @@ pagePatterns: ["**‍/index.vue", "**‍/[[]*[]].vue"];
 ```
 views
 ├── about
-│   └── index.vue
+│   └── index.tsx
 ```
 
 #### Generated routes
@@ -154,18 +225,19 @@ views
 
 > it is a single level route, to add layout, the component props combines the layout and view component, split by the dollar sign "$"
 
-#### Transformed Vue routes
+#### Transformed react routes
 
 ```ts
 {
   path: '/about',
   component: BaseLayout,
+  ErrorBoundary: ErrorBoundary,
   children: [
     {
-      name: 'about',
-      path: '',
-      component: () => import('@/views/about/index.vue'),
-      meta: {
+      id: 'about',
+      index:true,
+      lazy: () => import('@/pages/about/index.tsx'),
+      handle: {
         title: 'about'
       }
     }
@@ -181,21 +253,21 @@ views
 views
 ├── list
 │   ├── home
-│   │   └── index.vue
+│   │   └── index.tsx
 │   ├── detail
-│   │   └── index.vue
+│   │   └── index.tsx
 ```
 
-> Please don't have the following index.vue on the same level as the folder, this is not part of the agreed upon rules
+> Please don't have the following index.tsx on the same level as the folder, this is not part of the agreed upon rules
 
 **Error example**
 
 ```
 views
 ├── list
-│   ├── index.vue
+│   ├── index.tsx
 │   ├── detail
-│   │   └── index.vue
+│   │   └── index.tsx
 ```
 
 #### Generated routes
@@ -211,7 +283,7 @@ views
   children: [
     {
       name: 'list_home',
-      path: '/list/home',
+      path: 'home',
       component: 'view.list_home',
       meta: {
         title: 'list_home'
@@ -219,7 +291,7 @@ views
     },
     {
       name: 'list_detail',
-      path: '/list/detail',
+      path: 'detail',
       component: 'view.list_detail',
       meta: {
         title: 'list_detail'
@@ -231,33 +303,32 @@ views
 
 > There are two layers of route data for secondary routes, the first layer of route is the layout component and the second layer of route is the page component
 
-#### Transformed Vue routes
+#### Transformed react routes
 
 ```ts
 {
   name: 'list',
   path: '/list',
   component: BaseLayout,
-  redirect: {
-    name: 'list_home'
-  },
-  meta: {
+  ErrorBoundary: ErrorBoundary,
+  loader: ()=>redirect('/list/home'),
+  handle: {
     title: 'list'
   },
   children: [
-    {
+   {
       name: 'list_home',
-      path: '/list/home',
-      component: () => import('@/views/list/home/index.vue'),
-      meta: {
+      path: 'home',
+      lazy: () => import('@/views/list/home/index.tsx'),
+      handle: {
         title: 'list_home'
       }
     },
     {
       name: 'list_detail',
-      path: '/list/detail',
-      component: () => import('@/views/list/detail/index.vue'),
-      meta: {
+      path: 'detail',
+      lazy: () => import('@/views/list/detail/index.tsx'),
+      handle: {
         title: 'list_detail'
       }
     }
@@ -278,11 +349,11 @@ views
 ├── multi-menu
 │   ├── first
 │   │   ├── child
-│   │   │   └── index.vue
+│   │   │   └── index.tsx
 │   ├── second
 │   │   ├── child
 │   │   │   ├── home
-│   │   │   │   └── index.vue
+│   │   │   │   └── index.tsx
 ```
 
 - Two-tier folder hierarchy (recommended)
@@ -291,9 +362,9 @@ views
 views
 ├── multi-menu
 │   ├── first_child
-│   │   └── index.vue
+│   │   └── index.tsx
 │   ├── second_child_home
-│   │   └── index.vue
+│   │   └── index.tsx
 ```
 
 > The route hierarchy is split by the underscore symbol "\_", which prevents the folder hierarchy from being too deep.
@@ -311,14 +382,14 @@ views
   children: [
     {
       name: 'multi-menu_first',
-      path: '/multi-menu/first',
+      path: 'first',
       meta: {
         title: 'multi-menu_first'
       },
       children: [
         {
           name: 'multi-menu_first_child',
-          path: '/multi-menu/first/child',
+          path: 'child',
           component: 'view.multi-menu_first_child',
           meta: {
             title: 'multi-menu_first_child'
@@ -328,21 +399,21 @@ views
     },
     {
       name: 'multi-menu_second',
-      path: '/multi-menu/second',
+      path: 'second',
       meta: {
         title: 'multi-menu_second'
       },
       children: [
         {
           name: 'multi-menu_second_child',
-          path: '/multi-menu/second/child',
+          path: 'child',
           meta: {
             title: 'multi-menu_second_child'
           },
           children: [
             {
               name: 'multi-menu_second_child_home',
-              path: '/multi-menu/second/child/home',
+              path: 'home',
               component: 'view.multi-menu_second_child_home',
               meta: {
                 title: 'multi-menu_second_child_home'
@@ -358,7 +429,7 @@ views
 
 > if the route level is greater than 2, the generated route data is a recursive structure
 
-#### Transformed Vue routes
+#### Transformed react routes
 
 ```ts
 {
@@ -374,55 +445,67 @@ views
   children: [
     {
       name: 'multi-menu_first',
-      path: '/multi-menu/first',
-      redirect: {
-        name: 'multi-menu_first_child'
-      },
-      meta: {
+      path: 'first',
+      loader:()=>redirect('child')},
+      handle: {
         title: 'multi-menu_first'
-      }
-    },
-    {
+      },
+      children: [
+     {
       name: 'multi-menu_first_child',
-      path: '/multi-menu/first/child',
-      component: () => import('@/views/multi-menu/first_child/index.vue'),
-      meta: {
+      path: 'child',
+      lazy: () => import('@/views/multi-menu/first_child/index.tsx'),
+      handle: {
         title: 'multi-menu_first_child'
       }
     },
+      ]
+    },
     {
       name: 'multi-menu_second',
-      path: '/multi-menu/second',
-      redirect: {
-        name: 'multi-menu_second_child'
-      },
-      meta: {
+      path: 'second',
+      loader:()=>redirect('child'),
+      handle: {
         title: 'multi-menu_second'
       },
-    },
-    {
+      children:[
+        {
       name: 'multi-menu_second_child',
-      path: '/multi-menu/second/child',
-      redirect: {
-        name: 'multi-menu_second_child_home'
-      },
-      meta: {
+      path: 'child',
+      loader:()=>redirect('home'),
+      handle: {
         title: 'multi-menu_second_child'
       },
-    },
-    {
+      children:[
+      {
       name: 'multi-menu_second_child_home',
-      path: '/multi-menu/second/child/home',
-      component: () => import('@/views/multi-menu/second_child_home/index.vue'),
-      meta: {
+      path: 'home', 
+      lazy: () => import('@/views/multi-menu/second_child_home/index.tsx'),
+      handle: {
         title: 'multi-menu_second_child_home'
       }
-    }
+      }
+      ]
+    },
+      ]
+    },
+    
+    
   ]
 },
 ```
 
-> the transformed Vue routes only has two levels, the first level is the layout component, and the second level is the redirect routes or the page routes
+## Access`meta`
+
+```tsx
+import { useMatches } from "react-router-dom";
+
+const matches = useMatches();
+const meta= matches[matches.length - 1].handle;
+```
+- [related links](https://reactrouter.com/en/main/hooks/use-matches)
+
+> the transformed react routes only has two levels, the first level is the layout component, and the second level is the redirect routes or the page routes
 
 ### Ignore folder aggregation routes
 
@@ -434,11 +517,11 @@ Folder names that begin with an underscore "\_" will be ignored
 views
 ├── _error
 │   ├── 403
-│   │   └── index.vue
+│   │   └── index.tsx
 │   ├── 404
-│   │   └── index.vue
+│   │   └── index.tsx
 │   ├── 500
-│   │   └── index.vue
+│   │   └── index.tsx
 ```
 
 #### Generated routes
@@ -477,7 +560,7 @@ views
 ```
 views
 ├── user
-│   └── [id].vue
+│   └── [id].tsx
 ```
 
 #### Generated routes
@@ -499,7 +582,7 @@ views
 ```ts
 import type { RouteKey } from "@elegant-router/types";
 
-ElegantVueRouter({
+ElegantreactRouter({
   routePathTransformer(routeName, routePath) {
     const routeKey = routeName as RouteKey;
 
@@ -519,11 +602,11 @@ the custom route is only used to generate the route declaration, and the route f
 #### Config custom routes
 
 ```ts
-ElegantVueRouter({
+ElegantreactRouter({
   customRoutes: {
     map: {
       root: "/",
-      notFound: "/:pathMatch(.*)*",
+      notFound: "*",
     },
     names: ["two-level_route"],
   },
@@ -535,9 +618,9 @@ ElegantVueRouter({
 ```ts
 type RouteMap = {
   root: "/";
-  notFound: "/:pathMatch(.*)*";
+  notFound: "*";
   "two-level": "/two-level";
-  "two-level_route": "/two-level/route";
+  "two-level_route": "route";
 };
 
 type CustomRouteKey = "root" | "notFound" | "two-level" | "two-level_route";
@@ -554,13 +637,13 @@ const customRoutes: CustomRoute[] = [
   {
     name: "root",
     path: "/",
-    redirect: {
+    redirectTo: {
       name: "403",
     },
   },
   {
     name: "not-found",
-    path: "/:pathMatch(.*)*",
+    path: "*",
     component: "layout.base$view.404",
   },
   {
@@ -587,12 +670,12 @@ const customRoutes: CustomRoute[] = [
 | cmd                  | the root directory of the project                                                                                     | `string`                                            | `process.cwd()`                        |
 | pageDir              | the relative path to the root directory of the pages                                                                  | `string`                                            | `"src/views"`                          |
 | alias                | alias, it can be used for the page and layout file import path                                                        | `Record<string, string>`                            | `{ "@": "src" }`                       |
-| pagePatterns         | the patterns to match the page files (the match syntax follow [micromatch](https://github.com/micromatch/micromatch)) | `string[]`                                          | `["**‍/index.vue", "**‍/[[]*[]].vue"]` |
+| pagePatterns         | the patterns to match the page files (the match syntax follow [micromatch](https://github.com/micromatch/micromatch)) | `string[]`                                          | `["**‍/index.react", "**‍/[[]*[]].react"]` |
 | pageExcludePatterns  | the patterns to exclude the page files (The default exclusion folder `components` is used as the routing page file.)  | `string[]`                                          | `["**‍/components/**"]`                |
 | routeNameTransformer | transform the route name (The default is the name of the folder connected by an underscore)                           | `(routeName: string) => string`                     | `routeName => routeName`               |
 | routePathTransformer | transform the route path                                                                                              | `(transformedName: string, path: string) => string` | `(_transformedName, path) => path`     |
 
-`ElegantVueRouterOption`:
+`ElegantreactRouterOption`:
 
 > extends `ElegantRouterOption`
 
@@ -602,11 +685,11 @@ const customRoutes: CustomRoute[] = [
 | importsDir       | the directory of the imports of routes                                                                                                       | `string`                                           | `"src/router/elegant/imports.ts"`                                                            |
 | lazyImport       | whether the route is lazy import                                                                                                             | `(routeName: string) => boolean`                   | `_name => true`                                                                              |
 | constDir         | the directory of the route const                                                                                                             | `string`                                           | `"src/router/elegant/routes.ts"`                                                             |
-| customRoutes     | define custom routes, which's route only generate the route declaration                                                                      | `{ map: Record<string, string>; names: string[] }` | `{ map: { root: "/", notFound: "/:pathMatch(\*)\*" }, names: []}`                            |
-| layouts          | the name and file path of the route layouts                                                                                                  | `Record<string, string>`                           | `{ base: "src/layouts/base-layout/index.vue", blank: "src/layouts/blank-layout/index.vue" }` |
+| customRoutes     | define custom routes, which's route only generate the route declaration                                                                      | `{ map: Record<string, string>; names: string[] }` | `{ map: { root: "/", notFound: "*" }, names: []}`                            |
+| layouts          | the name and file path of the route layouts                                                                                                  | `Record<string, string>`                           | `{ base: "src/layouts/base-layout/index.tsx", blank: "src/layouts/blank-layout/index.tsx" }` |
 | defaultLayout    | the default layout name used in generated route const ( takes the first layout of `layouts` by default.)                                     | `string`                                           | `"base"`                                                                                     |
 | layoutLazyImport | whether the route is lazy import                                                                                                             | `(layoutName: string) => boolean`                  | `_name => false`                                                                             |
-| transformDir     | the directory of the routes transform function (Converts the route definitions of the generated conventions into routes for the vue-router.) | `string`                                           | `"src/router/elegant/transform.ts"`                                                          |
+| transformDir     | the directory of the routes transform function (Converts the route definitions of the generated conventions into routes for the react-router.) | `string`                                           | `"src/router/elegant/transform.ts"`                                                          |
 | onRouteMetaGen   | the route meta generator                                                                                                                     | `(routeName: string) => Record<string, string>`    | `routeName => ({ title: routeName })`                                                        |
 
 ## Caveat
@@ -615,12 +698,23 @@ const customRoutes: CustomRoute[] = [
 
   > The underscore is a cut identifier for the routing hierarchy, and the short horizontal line is used to connect multiple words in a one-level route
 
-- The reason the generated route data is two-level is to fit in with vue-router's page caching functionality, and because KeepAlive is only related to the name of the Vue file and not the route name, the plugin automatically injects the name attribute into the Vue file, which has the value of the route name
 
-  ```ts
-  defineOptions({
-    name: "about",
-  });
-  ```
 
-  > Currently only the script setup mode is supported, which injects the above `defineOptions` function.
+## Author
+
+<table>
+  <tr>
+    <td>
+      <img src="https://avatars.githubusercontent.com/u/155351881?v=4" width="100">
+    </td>
+    <td>
+      Ohh<br />
+      <span>1509326266@qq.com</span><br />
+      <a href="https://github.com/mufeng889">https://github.com/mufeng889</a>
+    </td>
+  </tr>
+</table>  
+ 
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/) 

@@ -13,7 +13,7 @@ ElegantRouter 与其他基于文件系统的路由工具的主要区别在于：
 1. 其他工具的配置规则繁多，路由数据为黑盒，自定义难度大。
 2. ElegantRouter 遵循api-first原则，将配置路由的过程自动化。
 
-以配置Vue路由为例，传统的创建页面路由需要以下步骤：
+以配置React路由为例，传统的创建页面路由需要以下步骤：
 
 1. 导入布局组件
 2. 导入页面组件
@@ -109,15 +109,15 @@ return {
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import react from '@vitejs/plugin-react-swc';
-import ElegantVueRouter from "@elegant-router/vue/vite";
+import ElegantVueRouter from "@@ohh-889/react-auto-route";
 
 export default defineConfig({
   plugins: [
     react(),
     ElegantReactRouter({
       layouts: {
-        base: "src/layouts/base-layout/index.vue",
-        blank: "src/layouts/blank-layout/index.vue",
+        base: "src/layouts/base-layout/index.tsx",
+        blank: "src/layouts/blank-layout/index.tsx",
       },
     }),
   ],
@@ -214,7 +214,7 @@ pagePatterns: ["**‍/index.tsx", "**‍/[[]*[]].tsx"];
 ```
 views
 ├── about
-│   └── index.vue
+│   └── index.tsx
 ```
 
 #### 生成的路由
@@ -238,11 +238,11 @@ views
 {
   path: '/about',
   component: BaseLayout,
+  ErrorBoundary: ErrorBoundary,
   children: [
     {
       id: 'about',
       index:true,
-      ErrorBoundary: ErrorBoundary,
       lazy: () => import('@/pages/about/index.tsx'),
       handle: {
         title: 'about'
@@ -260,9 +260,9 @@ views
 views
 ├── list
 │   ├── home
-│   │   └── index.vue
+│   │   └── index.tsx
 │   ├── detail
-│   │   └── index.vue
+│   │   └── index.tsx
 ```
 
 **错误示例**
@@ -270,11 +270,11 @@ views
 ```
 views
 ├── list
-│   ├── index.vue
+│   ├── index.tsx
 │   ├── detail
-│   │   └── index.vue
+│   │   └── index.tsx
 ```
-> 请不要出现上述 index.vue 和文件夹同级的情况，这种情况不在约定的规则中
+> 请不要出现上述 index.tsx 和文件夹同级的情况，这种情况不在约定的规则中
 
 #### 生成的路由
 
@@ -355,11 +355,11 @@ views
 ├── multi-menu
 │   ├── first
 │   │   ├── child
-│   │   │   └── index.vue
+│   │   │   └── index.tsx
 │   ├── second
 │   │   ├── child
 │   │   │   ├── home
-│   │   │   │   └── index.vue
+│   │   │   │   └── index.tsx
 ```
 
 - 两层文件夹层级（推荐）
@@ -368,9 +368,9 @@ views
 views
 ├── multi-menu
 │   ├── first_child
-│   │   └── index.vue
+│   │   └── index.tsx
 │   ├── second_child_home
-│   │   └── index.vue
+│   │   └── index.tsx
 ```
 
 > 通过下划线符号 `_` 来分割路由层级，这样可以避免文件夹层级过深
@@ -519,11 +519,11 @@ const meta= matches[matches.length - 1].handle;
 views
 ├── _error
 │   ├── 403
-│   │   └── index.vue
+│   │   └── index.tsx
 │   ├── 404
-│   │   └── index.vue
+│   │   └── index.tsx
 │   ├── 500
-│   │   └── index.vue
+│   │   └── index.tsx
 ```
 
 #### 生成的路由
@@ -562,7 +562,7 @@ views
 ```
 views
 ├── user
-│   └── [id].vue
+│   └── [id].tsx
 ```
 
 #### 生成的路由
@@ -622,7 +622,7 @@ ElegantVueRouter({
 ```ts
 type RouteMap = {
   root: "/";
-  notFound: "/:pathMatch(.*)*";
+  notFound: "*";
   "two-level": "/two-level";
   "two-level_route": "route";
 };
@@ -641,7 +641,7 @@ const customRoutes: CustomRoute[] = [
   {
     name: "root",
     path: "/",
-    redirect: {
+    redirectTo: {
       name: "403",
     },
   },
@@ -676,7 +676,7 @@ const customRoutes: CustomRoute[] = [
 | cmd                  | 项目根目录                                                                                 | `string`                                            | `process.cwd()`                        |
 | pageDir              | 页面文件夹相对根目录的路径                                                                 | `string`                                            | `"src/pages"`                          |
 | alias                | 别名，可用于路由导入文件的路径替换                                                         | `Record<string, string>`                            | `{ "@": "src" }`                       |
-| pagePatterns         | 路由页面文件匹配规则 (匹配语法参照 [micromatch](https://github.com/micromatch/micromatch)) | `string[]`                                          | `["**‍/index.vue", "**‍/[[]*[]].vue"]` |
+| pagePatterns         | 路由页面文件匹配规则 (匹配语法参照 [micromatch](https://github.com/micromatch/micromatch)) | `string[]`                                          | `["**‍/index.tsx", "**‍/[[]*[]].tsx"]` |
 | pageExcludePatterns  | 路由页面文件排除规则 (默认排除文件夹 components 下作为路由页面文件)                        | `string[]`                                          | `["**‍/components/**"]`                |
 | routeNameTransformer | 路由名称转换函数 (默认是以下划线连接的文件夹名称)                                          | `(routeName: string) => string`                     | `routeName => routeName`               |
 | routePathTransformer | 路由路径转换函数                                                                           | `(transformedName: string, path: string) => string` | `(_transformedName, path) => path`     |
@@ -692,10 +692,10 @@ const customRoutes: CustomRoute[] = [
 | lazyImport       | 是否使用懒加载导入                                                             | `(routeName: string) => boolean`                   | `_name => true`                                                                              |
 | constDir         | 生成的路由定义文件的相对根目录路径                                             | `string`                                           | `"src/router/elegant/routes.ts"`                                                             |
 | customRoutes     | 自定义路由的名称和路径映射表（只会生成路由类型）                               | `{ map: Record<string, string>; names: string[] }` | `{ map: { root: "/", notFound: "/:pathMatch(\*)\*" }, names: []}`                            |
-| layouts          | 布局组件的名称和文件路径映射表                                                 | `Record<string, string>`                           | `{ base: "src/layouts/base-layout/index.vue", blank: "src/layouts/blank-layout/index.vue" }` |
+| layouts          | 布局组件的名称和文件路径映射表                                                 | `Record<string, string>`                           | `{ base: "src/layouts/base-layout/index.tsx", blank: "src/layouts/blank-layout/index.tsx" }` |
 | defaultLayout    | 生成路由定义里面的默认布局组件 ( 默认取`layouts`的第一个布局)                  | `string`                                           | `"base"`                                                                                     |
 | layoutLazyImport | 是否使用懒加载导入布局组件                                                     | `(layoutName: string) => boolean`                  | `_name => false`                                                                             |
-| transformDir     | 路由转换文件的相对根目录路径 (将生成约定的路由定义转换成 vue-router 的 routes) | `string`                                           | `"src/router/elegant/transform.ts"`                                                          |
+| transformDir     | 路由转换文件的相对根目录路径 (将生成约定的路由定义转换成 react-router 的 routes) | `string`                                           | `"src/router/elegant/transform.ts"`                                                          |
 | onRouteMetaGen   | 路由元信息生成函数                                                             | `(routeName: string) => Record<string, string>`    | `routeName => ({ title: routeName })`                                                        |
 
 ## 注意事项
@@ -703,3 +703,23 @@ const customRoutes: CustomRoute[] = [
 - 文件夹的命名方式：只能包含 字母、数字、短横线、下划线，不能包含其他特殊字符
 
   > 下划线是路由层级的切割标识，短横线用于在一级路由中连接多个单词
+
+## Author
+
+<table>
+  <tr>
+    <td>
+      <img src="https://avatars.githubusercontent.com/u/155351881?v=4" width="100">
+    </td>
+    <td>
+      Ohh<br />
+      <span>1509326266@qq.com</span><br />
+      <a href="https://github.com/mufeng889">https://github.com/mufeng889</a>
+    </td>
+  </tr>
+</table>  
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)  
