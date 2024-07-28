@@ -28,6 +28,14 @@
     "registry": "https://registry.npmjs.org/"
   },
   "sideEffects": false,
+  "keywords": [
+    "react-router",
+    "react",
+    "router",
+    "auto-route",
+    "contract-router",
+    "react-router-dom"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
