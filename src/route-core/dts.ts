@@ -198,6 +198,7 @@ declare module "@elegant-router/types" {
         name: K;
         path: RouteMap[K];
         component: \`${LAYOUT_PREFIX}\${RouteLayout}$${VIEW_PREFIX}\${K}\`| \`${VIEW_PREFIX}\${LastLevelRouteKey}\`;
+        children?:ElegantConstRoute[] ;
         layout?:${layoutType}
       }
     : never;
@@ -244,7 +245,7 @@ declare module "@elegant-router/types" {
     ? Omit<ElegantConstRoute, 'children'> & {
         name: K;
         path: RouteMap[K];
-        component?: \`${LAYOUT_PREFIX}\${RouteLayout}$${VIEW_PREFIX}\${LastLevelRouteKey}\`| \`${VIEW_PREFIX}\${LastLevelRouteKey}\`;
+        component?: \`${LAYOUT_PREFIX}\${RouteLayout}$${VIEW_PREFIX}\${LastLevelRouteKey}\`| \`${VIEW_PREFIX}\${LastLevelRouteKey}\`| \`$${VIEW_PREFIX}\${LastLevelRouteKey}\`;
         layout?:${layoutType}
       }
     : never;

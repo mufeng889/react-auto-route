@@ -32,7 +32,7 @@ function getTransformCode(options: ElegantReactRouterOption, entries: ElegantRou
 
 import type { LazyRouteFunction, RouteObject,IndexRouteObject } from "react-router-dom";
 import type { FunctionComponent } from "react";
-import type { ElegantConstRoute } from @ohh-889/react-auto-route';
+import type { ElegantConstRoute } from '@ohh-889/react-auto-route';
 import type { RouteMap, RouteKey, RoutePath } from '@elegant-router/types';
 import { redirect } from 'react-router-dom'
 import ErrorBoundary  from '@/pages/_builtin/error' 
@@ -113,7 +113,7 @@ export function transformElegantRouteToReactRoute(
     const [layout, view] = component.split(FIRST_LEVEL_ROUTE_COMPONENT_SPLIT);
 
     return {
-      layout: getLayoutName(layout),
+      layout: layout?getLayoutName(layout):undefined,
       view: getViewName(view)
     };
   }
@@ -190,25 +190,25 @@ export function transformElegantRouteToReactRoute(
     return {};
   }
 
-if (redirectTo) {
-    reactRoute.loader=()=>redirect(redirectTo)
-  }
 
-  if (loader) {
-    reactRoute.loader = () => loader
-  }
+  
 
 
  if (children?.length) {
     reactRoute.children = children.flatMap(child => transformElegantRouteToReactRoute(child, layouts, views));
+      const defaultRedirectPath = redirectTo || getRedirectPath(path as string, children[0].path as string);
 
-    if (!redirectTo) {
       reactRoute.children.unshift({
         index: true,
-        loader: () => redirect(getRedirectPath(path as string,children[0].path as string) ),
+        loader: () => redirect(defaultRedirectPath),
         ...rest
       });
-    }
+  }else if (redirectTo) {
+    reactRoute.loader=()=>redirect(redirectTo)
+  }
+  
+  if (loader) {
+    reactRoute.loader = () => loader
   }
 
   if (layout) {
