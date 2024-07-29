@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.6](https://github.com/mufeng889/react-auto-route/compare/v0.2.5...v0.2.6) (2024-07-30)
+
+### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
+
+- **projects**: dts and transform  supports multilevel routing user-defined jump subpages &nbsp;-&nbsp; by **wang** [<samp>(4b9c1)</samp>](https://github.com/mufeng889/react-auto-route/commit/4b9c1e3)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.5](https://github.com/mufeng889/react-auto-route/compare/v0.2.4...v0.2.5) (2024-07-28)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
