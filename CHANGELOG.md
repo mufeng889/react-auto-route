@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.7](https://github.com/mufeng889/react-auto-route/compare/v0.2.6...v0.2.7) (2024-08-01)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **projects**: single-level routes add error boundaries &nbsp;-&nbsp; by **wang** [<samp>(15db9)</samp>](https://github.com/mufeng889/react-auto-route/commit/15db96a)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.6](https://github.com/mufeng889/react-auto-route/compare/v0.2.5...v0.2.6) (2024-07-30)
 
 ### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
