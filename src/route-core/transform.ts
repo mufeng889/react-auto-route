@@ -134,6 +134,7 @@ export function transformElegantRouteToReactRoute(
           const singleLevelRoute:RouteObject= {
             path,
             lazy: layouts[layout],
+            ErrorBoundary,
             children: [
               {
                 id:name,
