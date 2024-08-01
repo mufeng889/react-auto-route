@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.8](https://github.com/mufeng889/react-auto-route/compare/v0.2.7...v0.2.8) (2024-08-01)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **projects**: supplementary type declaration &nbsp;-&nbsp; by **wang** [<samp>(43242)</samp>](https://github.com/mufeng889/react-auto-route/commit/43242d4)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.7](https://github.com/mufeng889/react-auto-route/compare/v0.2.6...v0.2.7) (2024-08-01)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
