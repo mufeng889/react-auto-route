@@ -53,7 +53,7 @@ function getDtsCode(
   let code = `${prefixComment}
 
 declare module "@elegant-router/types" {
-  type ElegantConstRoute = import('@elegant-router/react').ElegantConstRoute;
+  type ElegantConstRoute = import('@ohh-889/react-auto-route').ElegantConstRoute;
 
   /**
    * route layout
