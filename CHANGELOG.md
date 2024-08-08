@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.9](https://github.com/mufeng889/react-auto-route/compare/v0.2.8...v0.2.9) (2024-08-08)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **projects**: by default, the error boundary is placed on the root path &nbsp;-&nbsp; by **wang** [<samp>(e11d1)</samp>](https://github.com/mufeng889/react-auto-route/commit/e11d19d)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.8](https://github.com/mufeng889/react-auto-route/compare/v0.2.7...v0.2.8) (2024-08-01)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
