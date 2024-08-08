@@ -35,7 +35,7 @@ import type { FunctionComponent } from "react";
 import type { ElegantConstRoute } from '@ohh-889/react-auto-route';
 import type { RouteMap, RouteKey, RoutePath } from '@elegant-router/types';
 import { redirect } from 'react-router-dom'
-import ErrorBoundary  from '@/pages/_builtin/error' 
+import ErrorBoundary  from '../../../ErrorBoundary.tsx'
 
 
 type CustomRouteObject = Omit<RouteObject, 'Component'|'index'> & {
@@ -177,7 +177,7 @@ export function transformElegantRouteToReactRoute(
            const data= (await views[viewName]()).Component as FunctionComponent
             return {
             element: data(props) ,
-             ErrorBoundary
+            ErrorBoundary: null
             }
           }
         } else {
