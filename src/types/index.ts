@@ -118,6 +118,9 @@ export interface ElegantReactRouterOption extends ElegantRouterOption {
    * @param routeName the route name
    */
   onRouteMetaGen(routeName: string): Record<string, unknown>;
+  errorBoundaryPath?: string
+  routeInfoByFile?: boolean,
+  routeInfoFileName?:string
 }
 
 export type CustomRouteConfig = {

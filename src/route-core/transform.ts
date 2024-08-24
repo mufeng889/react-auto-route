@@ -35,7 +35,7 @@ import type { FunctionComponent } from "react";
 import type { ElegantConstRoute } from '@ohh-889/react-auto-route';
 import type { RouteMap, RouteKey, RoutePath } from '@elegant-router/types';
 import { redirect } from 'react-router-dom'
-import ErrorBoundary  from '../../../ErrorBoundary.tsx'
+import ErrorBoundary from "${options.errorBoundaryPath||'../../../ErrorBoundary.tsx'}"
 
 
 type CustomRouteObject = Omit<RouteObject, 'Component'|'index'> & {

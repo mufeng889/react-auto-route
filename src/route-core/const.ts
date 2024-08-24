@@ -9,6 +9,7 @@ import { formatCode } from '../shared/prettier';
 import { FIRST_LEVEL_ROUTE_COMPONENT_SPLIT, LAYOUT_PREFIX, VIEW_PREFIX } from '../constants';
 import type { ElegantConstRoute, ElegantReactRouterOption, RouteConstExport } from '../types';
 import { createPrefixCommentOfGenFile } from './comment';
+import { log } from './log';
 
 export async function genConstFile(tree: ElegantRouterTree[], options: ElegantReactRouterOption) {
   const { cwd, constDir } = options;
@@ -16,6 +17,7 @@ export async function genConstFile(tree: ElegantRouterTree[], options: ElegantRe
   const routesFilePath = path.posix.join(cwd, constDir);
 
   const code = await getConstCode(tree, options);
+
 
   await writeFile(routesFilePath, code, 'utf8');
 }
@@ -31,18 +33,26 @@ async function getConstCode(trees: ElegantRouterTree[], options: ElegantReactRou
     await writeFile(routeFilePath, code, 'utf-8');
   }
 
+
   const md = await loadFile<RouteConstExport>(routeFilePath, { parser: { parse } });
+
 
   const autoRoutes = trees.map(item => transformRouteTreeToElegantConstRoute(item, options));
 
   const oldRoutes = JSON.parse(JSON.stringify(md.exports.generatedRoutes)) as ElegantConstRoute[];
 
-  const updated = getUpdatedRouteConst(oldRoutes, autoRoutes, options);
+  
+
+  const updated =await getUpdatedRouteConst(oldRoutes, autoRoutes, options);
 
   md.exports.generatedRoutes = updated as any;
 
+
   let { code } = generateCode(md);
+
+  
   code = transformComponent(code);
+
 
   const formattedCode = await formatCode(code);
 
@@ -65,27 +75,55 @@ export const generatedRoutes: GeneratedRoute[] = [];
   return code;
 }
 
-function getUpdatedRouteConst(
+ async function getUpdatedRouteConst(
   oldConst: ElegantConstRoute[],
   newConst: ElegantConstRoute[],
   options: ElegantReactRouterOption
 ) {
   const oldRouteMap = getElegantConstRouteMap(oldConst);
 
-  const updated = newConst.map(item => {
+
+
+  const updated =await Promise.all(newConst.map(async (item)=> {
     const oldRoute = oldRouteMap.get(item.name);
+    let config={} as ElegantConstRoute
+    if (options.routeInfoByFile) {
+      const configFile=item.name.split("_").join('/')+'/'+options.routeInfoFileName
+   
+    const {cwd,pageDir}=options
+    const routeFilePath = path.posix.join(cwd, pageDir,configFile);
+
+    try {
+      const md = await loadFile<RouteConstExport>(routeFilePath, { parser: { parse } });
+      config = JSON.parse(JSON.stringify(md.exports)) as ElegantConstRoute;
+
+    } catch (error:any) {
+     
+      log('Note that no file related to routing information is created in this file:'+' '+error.path, 'info', options.log);
+    }
+   }
+   
 
     if (!oldRoute) {
+      if (options.routeInfoByFile) {
+        Object.assign(item,config)
+      }
       return item;
     }
 
+
     const { name, path: routePath, component, children, meta, ...rest } = item;
+
 
     const updatedRoute = { ...oldRoute, path: routePath };
 
     const isFirstLevel = !name.includes(PAGE_DEGREE_SPLITTER) && !children?.length;
 
-    if (oldRoute.component && component) {
+ 
+
+    if (config.layout||oldRoute.layout) {
+      updatedRoute.component = 'layout.'+ config.layout||oldRoute.layout;
+    }else if (oldRoute.component && component) {
       if (isFirstLevel) {
         const { layoutName: oldLayoutName } = resolveFirstLevelRouteComponent(oldRoute.component);
         const { layoutName: newLayoutName } = resolveFirstLevelRouteComponent(component);
@@ -101,31 +139,41 @@ function getUpdatedRouteConst(
         const layoutName = oldRoute.component.replace(LAYOUT_PREFIX, '');
         const hasLayout = Boolean(options.layouts[layoutName]);
 
-        if (isView || (isLayout && !hasLayout)) {
+
+       
+      if (isView || (isLayout && !hasLayout)) {
           updatedRoute.component = component;
         }
+
       }
     }
+   
 
     mergeObject(updatedRoute, rest);
-
     if (!updatedRoute.meta && meta) {
       updatedRoute.meta = meta;
     }
-
     if (updatedRoute.meta && meta) {
       mergeObject(updatedRoute.meta, meta);
     }
+    if (options.routeInfoByFile) {
+      Object.assign(updatedRoute,config)
+    }
+   
 
     if (children?.length) {
-      updatedRoute.children = getUpdatedRouteConst(oldRoute?.children || [], children, options);
+      updatedRoute.children =
+ await getUpdatedRouteConst(oldRoute?.children || [], children, options);
     }
 
     return updatedRoute;
-  });
+  }));
 
   return updated;
-}
+ }
+
+
+
 
 function mergeObject<T extends Record<string, unknown>>(target: T, source: T) {
   const keys = Object.keys(source) as (keyof T)[];
@@ -139,6 +187,7 @@ function mergeObject<T extends Record<string, unknown>>(target: T, source: T) {
 
 function getElegantConstRouteMap(constRoutes: ElegantConstRoute[]) {
   const routeMap = new Map<string, ElegantConstRoute>();
+
 
   function recursiveGetElegantConstRoute(routes: ElegantConstRoute[]) {
     routes.forEach(item => {
@@ -164,8 +213,11 @@ function getElegantConstRouteMap(constRoutes: ElegantConstRoute[]) {
  * @param options the plugin options
  */
 function transformRouteTreeToElegantConstRoute(tree: ElegantRouterTree, options: ElegantReactRouterOption) {
+ 
+  
   const { defaultLayout, onRouteMetaGen } = options;
   const { routeName, routePath, children = [] } = tree;
+
 
   const layoutComponent = `${LAYOUT_PREFIX}${defaultLayout}`;
   const firstLevelRouteComponent = getFirstLevelRouteComponent(routeName, defaultLayout);
@@ -233,8 +285,8 @@ function resolveFirstLevelRouteComponent(component: string) {
 }
 
 function transformComponent(routeJson: string) {
-  const COMPONENT_REG = /"component":\s*"(.*?)"/g;
 
+  const COMPONENT_REG = /"component":\s*"(.*?)"/g;
   const result = routeJson.replace(COMPONENT_REG, match => {
     const [component, viewOrLayout] = match.split(':');
 

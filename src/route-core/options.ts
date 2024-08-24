@@ -10,6 +10,7 @@ export function createPluginOptions(erOptions: ElegantRouterOption, options?: Pa
   const DTS_DIR = 'src/types/elegant-router.d.ts';
   const IMPORT_DIR = 'src/router/elegant/imports.ts';
   const CONST_DIR = 'src/router/elegant/routes.ts';
+  const ROUTE_INFO_FILENAME = 'config.ts';
   const TRANSFORM_DIR = 'src/router/elegant/transform.ts';
   const CUSTOM_ROUTES_MAP: Record<string, string> = {
     root: '/',
@@ -29,6 +30,8 @@ export function createPluginOptions(erOptions: ElegantRouterOption, options?: Pa
       map: {},
       names: []
     },
+    routeInfoByFile: true,
+    routeInfoFileName:ROUTE_INFO_FILENAME,
     layouts: DEFAULT_LAYOUTS,
     defaultLayout: Object.keys(DEFAULT_LAYOUTS)[0],
     layoutLazyImport: _name => true,
