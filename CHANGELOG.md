@@ -1,6 +1,21 @@
 # Changelog
 
 
+## [v0.3.0](https://github.com/mufeng889/react-auto-route/compare/v0.2.9...v0.3.0) (2024-08-24)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **projects**: can create routing information in a routing file & assign layout manually & custom error boundary path &nbsp;-&nbsp; by **wang** [<samp>(37b11)</samp>](https://github.com/mufeng889/react-auto-route/commit/37b11ee)
+
+### &nbsp;&nbsp;&nbsp;🛠 Optimizations
+
+- **projects**: remove useless code &nbsp;-&nbsp; by **wang** [<samp>(732bb)</samp>](https://github.com/mufeng889/react-auto-route/commit/732bb7c)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.2.9](https://github.com/mufeng889/react-auto-route/compare/v0.2.8...v0.2.9) (2024-08-08)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
