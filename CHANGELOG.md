@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.3.1](https://github.com/mufeng889/react-auto-route/compare/v0.3.0...v0.3.1) (2024-08-25)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **projects**: the attribute of the jump path is changed from redirectTo to redirect &nbsp;-&nbsp; by **wang** [<samp>(7e762)</samp>](https://github.com/mufeng889/react-auto-route/commit/7e7626f)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.3.0](https://github.com/mufeng889/react-auto-route/compare/v0.2.9...v0.3.0) (2024-08-24)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
