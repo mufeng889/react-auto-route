@@ -34,7 +34,7 @@ import type { LazyRouteFunction, RouteObject,IndexRouteObject } from "react-rout
 import type { FunctionComponent } from "react";
 import type { ElegantConstRoute } from '@ohh-889/react-auto-route';
 import type { RouteMap, RouteKey, RoutePath } from '@elegant-router/types';
-import { redirect } from 'react-router-dom'
+import { redirect as redirectTo } from 'react-router-dom'
 import ErrorBoundary from "${options.errorBoundaryPath||'../../../ErrorBoundary.tsx'}"
 
 
@@ -119,7 +119,7 @@ export function transformElegantRouteToReactRoute(
   }
 
 
-  const { name,props, path,meta, component, children,redirectTo,layout,loader, ...rest } = route;
+  const { name,props, path,meta, component, children,redirect,layout,loader, ...rest } = route;
 
   const reactRoute = {id:name, path,handle: {
     ...meta
@@ -197,15 +197,15 @@ export function transformElegantRouteToReactRoute(
 
  if (children?.length) {
     reactRoute.children = children.flatMap(child => transformElegantRouteToReactRoute(child, layouts, views));
-      const defaultRedirectPath = redirectTo || getRedirectPath(path as string, children[0].path as string);
+      const defaultRedirectPath = redirect || getRedirectPath(path as string, children[0].path as string);
 
       reactRoute.children.unshift({
         index: true,
-        loader: () => redirect(defaultRedirectPath),
+        loader: () => redirectTo(defaultRedirectPath),
         ...rest
       });
-  }else if (redirectTo) {
-    reactRoute.loader=()=>redirect(redirectTo)
+  }else if (redirect) {
+    reactRoute.loader=()=>redirectTo(redirect)
   }
   
   if (loader) {

@@ -139,7 +139,7 @@ export type ElegantConstRoute = Omit<RouteObject, 'id' | 'path' | 'children'> & 
   meta?: RouteMeta;
   props?: Record<string, unknown>;
   layout?: string;
-  redirectTo?: string;
+  redirect?: string;
   children?: ElegantConstRoute[];
 };
 
