@@ -121,8 +121,11 @@ export const generatedRoutes: GeneratedRoute[] = [];
 
  
 
-    if (config.layout||oldRoute.layout) {
-      updatedRoute.component = 'layout.'+ config.layout||oldRoute.layout;
+
+    if (config.layout || oldRoute.layout) {
+      const layout = config.layout || oldRoute.layout;
+      
+      updatedRoute.component = `layout.${layout}`;
     }else if (oldRoute.component && component) {
       if (isFirstLevel) {
         const { layoutName: oldLayoutName } = resolveFirstLevelRouteComponent(oldRoute.component);
