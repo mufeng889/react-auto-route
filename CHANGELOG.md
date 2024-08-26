@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.3.2](https://github.com/mufeng889/react-auto-route/compare/v0.3.1...v0.3.2) (2024-08-26)
+
+### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
+
+- **projects**: fixed hook not being used in routing files with parameters & component layout appears undefined &nbsp;-&nbsp; by **wang** [<samp>(1cdc3)</samp>](https://github.com/mufeng889/react-auto-route/commit/1cdc3bc)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.3.1](https://github.com/mufeng889/react-auto-route/compare/v0.3.0...v0.3.1) (2024-08-25)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
