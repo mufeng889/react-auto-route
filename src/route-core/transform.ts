@@ -133,12 +133,13 @@ export function transformElegantRouteToReactRoute(
          if (layout) {
           const singleLevelRoute:RouteObject= {
             path,
-            lazy: layouts[layout],
             ErrorBoundary,
+            lazy: layouts[layout],
             children: [
               {
                 id:name,
                 index: true,
+                ErrorBoundary,
                 lazy: views[view],
                 handle: {
                   ...meta
@@ -173,11 +174,16 @@ export function transformElegantRouteToReactRoute(
       if (isView(component)) {
         const viewName = getViewName(component);
         if (props) {
-          reactRoute.lazy = async () => {
-           const data= (await views[viewName]()).Component as FunctionComponent
+           reactRoute.lazy = async () => {
+            const data = await views[viewName]()
+        reactRoute.ErrorBoundary=data.ErrorBoundary||ErrorBoundary
             return {
-            Component: ()=>data(props) ,
-            ErrorBoundary: null
+            Component: ()=>{
+                const Component = data.Component as FunctionComponent
+                return Component(props)
+            },
+            loader: data.loader,
+            action: data.action,
             }
           }
         } else {
@@ -201,6 +207,7 @@ export function transformElegantRouteToReactRoute(
 
       reactRoute.children.unshift({
         index: true,
+        ErrorBoundary,
         loader: () => redirectTo(defaultRedirectPath),
         ...rest
       });
@@ -208,9 +215,7 @@ export function transformElegantRouteToReactRoute(
     reactRoute.loader=()=>redirectTo(redirect)
   }
   
-  if (loader) {
-    reactRoute.loader = () => loader
-  }
+
 
   if (layout) {
 
