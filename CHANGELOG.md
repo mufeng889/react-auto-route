@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.3.3](https://github.com/mufeng889/react-auto-route/compare/v0.3.2...v0.3.3) (2024-09-08)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **projects**: props are supported just like normal components &nbsp;-&nbsp; by **wang** [<samp>(c6d3d)</samp>](https://github.com/mufeng889/react-auto-route/commit/c6d3d9d)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[wang](mailto:1509326266@qq.com)
+
 ## [v0.3.2](https://github.com/mufeng889/react-auto-route/compare/v0.3.1...v0.3.2) (2024-08-26)
 
 ### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
