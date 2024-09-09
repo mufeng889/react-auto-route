@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.3.4](https://github.com/mufeng889/react-auto-route/compare/v0.3.3...v0.3.4) (2024-09-09)
+
+### &nbsp;&nbsp;&nbsp;🎨 Styles
+
+- **projects**: optimize code style &nbsp;-&nbsp; by **DESKTOP-31IBRMI\Administrator** [<samp>(b6e4b)</samp>](https://github.com/mufeng889/react-auto-route/commit/b6e4ba8)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[DESKTOP-31IBRMI\Administrator](mailto:1509326266@qq.com)
+
 ## [v0.3.3](https://github.com/mufeng889/react-auto-route/compare/v0.3.2...v0.3.3) (2024-09-08)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
