@@ -30,21 +30,20 @@ function getTransformCode(options: ElegantReactRouterOption, entries: ElegantRou
 
   const code = `${prefixComment}
 
-import type { LazyRouteFunction, RouteObject,IndexRouteObject } from "react-router-dom";
-import type { FunctionComponent } from "react";
+import type { IndexRouteObject, LazyRouteFunction,RouteObject } from "react-router-dom";
+import type { FunctionComponent } from 'react';
 import type { ElegantConstRoute } from '@ohh-889/react-auto-route';
-import type { RouteMap, RouteKey, RoutePath } from '@elegant-router/types';
-import { redirect as redirectTo } from 'react-router-dom'
+import type { RouteKey, RouteMap, RoutePath } from '@elegant-router/types';
+import { redirect as redirectTo } from 'react-router-dom';
 import ErrorBoundary from "${options.errorBoundaryPath||'../../../ErrorBoundary.tsx'}"
 
-
-type CustomRouteObject = Omit<RouteObject, 'Component'|'index'> & {
-  Component?: React.ComponentType<any>|null;
+type CustomRouteObject = Omit<RouteObject, 'Component' | 'index'> & {
+  Component?: React.ComponentType<any> | null;
 };
-
 
 /**
  * transform elegant const routes to react routes
+ *
  * @param routes elegant const routes
  * @param layouts layout components
  * @param views view components
@@ -59,6 +58,7 @@ export function transformElegantRoutesToReactRoutes(
 
 /**
  * transform elegant route to react route
+ *
  * @param route elegant const route
  * @param layouts layout components
  * @param views view components
@@ -66,8 +66,8 @@ export function transformElegantRoutesToReactRoutes(
 export function transformElegantRouteToReactRoute(
   route: ElegantConstRoute,
   layouts: Record<string, LazyRouteFunction<CustomRouteObject>>,
-  views: Record<string,LazyRouteFunction<CustomRouteObject>>
-):RouteObject  {
+  views: Record<string, LazyRouteFunction<CustomRouteObject>>
+): RouteObject {
   const LAYOUT_PREFIX = 'layout.';
   const VIEW_PREFIX = 'view.';
   const ROUTE_DEGREE_SPLITTER = '_';
@@ -80,7 +80,7 @@ export function transformElegantRouteToReactRoute(
   function getLayoutName(component: string) {
     const layout = component.replace(LAYOUT_PREFIX, '');
 
-    if(!layouts[layout]) {
+    if (!layouts[layout]) {
       throw new Error(\`Layout component "\${layout}" not found\`);
     }
 
@@ -94,7 +94,7 @@ export function transformElegantRouteToReactRoute(
   function getViewName(component: string) {
     const view = component.replace(VIEW_PREFIX, '');
 
-    if(!views[view]) {
+    if (!views[view]) {
       throw new Error(\`View component "\${view}" not found\`);
     }
 
@@ -113,33 +113,37 @@ export function transformElegantRouteToReactRoute(
     const [layout, view] = component.split(FIRST_LEVEL_ROUTE_COMPONENT_SPLIT);
 
     return {
-      layout: layout?getLayoutName(layout):undefined,
+      layout: layout ? getLayoutName(layout) : undefined,
       view: getViewName(view)
     };
   }
 
+  const { name, props, path, meta, component, children, redirect, layout, ...rest } = route;
 
-  const { name,props, path,meta, component, children,redirect,layout,loader, ...rest } = route;
-
-  const reactRoute = {id:name, path,handle: {
-    ...meta
-  }, children:[],ErrorBoundary }as RouteObject
+  const reactRoute = {
+    id: name,
+    path,
+    handle: {
+      ...meta
+    },
+    children: [],
+    ErrorBoundary
+  } as RouteObject;
 
   try {
     if (component) {
       if (isSingleLevelRoute(route)) {
         const { layout, view } = getSingleLevelRouteComponent(component);
 
-         if (layout) {
-          const singleLevelRoute:RouteObject= {
+        if (layout) {
+          const singleLevelRoute: RouteObject = {
             path,
-            ErrorBoundary,
             lazy: layouts[layout],
+            ErrorBoundary,
             children: [
               {
-                id:name,
+                id: name,
                 index: true,
-                ErrorBoundary,
                 lazy: views[view],
                 handle: {
                   ...meta
@@ -149,81 +153,65 @@ export function transformElegantRouteToReactRoute(
             ]
           };
 
-        return singleLevelRoute;
+          return singleLevelRoute;
         }
 
-    return {
+        return {
           path,
           lazy: views[view],
           id: name,
           ...rest
-       } as RouteObject;
+        } as RouteObject;
       }
 
       if (isLayout(component)) {
         if (layout) {
-          reactRoute.lazy=views[name]
+          reactRoute.lazy = views[name];
         } else {
           const layoutName = getLayoutName(component);
           reactRoute.lazy = layouts[layoutName];
         }
-
       }
-
 
       if (isView(component)) {
         const viewName = getViewName(component);
         if (props) {
-           reactRoute.lazy = async () => {
-            const data = await views[viewName]()
-        reactRoute.ErrorBoundary=data.ErrorBoundary||ErrorBoundary
+          reactRoute.lazy = async () => {
+            const data = (await views[viewName]()).Component as FunctionComponent;
             return {
-            Component: ()=>{
-                const Component = data.Component as FunctionComponent
-                return Component(props)
-            },
-            loader: data.loader,
-            action: data.action,
-            }
-          }
+              Component: () => data(props),
+              ErrorBoundary: null
+            };
+          };
         } else {
-          reactRoute.lazy = views[viewName]
+          reactRoute.lazy = views[viewName];
         }
       }
-
     }
   } catch (error: any) {
-    console.error(\`Error transforming route "\${route.name}": \${error.toString()}\`);
+     console.error(\`Error transforming route "\${route.name}": \${error.toString()}\`);
     return {};
   }
 
-
-  
-
-
- if (children?.length) {
+  if (children?.length) {
     reactRoute.children = children.flatMap(child => transformElegantRouteToReactRoute(child, layouts, views));
-      const defaultRedirectPath = redirect || getRedirectPath(path as string, children[0].path as string);
+    const defaultRedirectPath = redirect || getRedirectPath(path as string, children[0].path as string);
 
-      reactRoute.children.unshift({
-        index: true,
-        ErrorBoundary,
-        loader: () => redirectTo(defaultRedirectPath),
-        ...rest
-      });
-  }else if (redirect) {
-    reactRoute.loader=()=>redirectTo(redirect)
+    reactRoute.children.unshift({
+      index: true,
+      loader: () => redirectTo(defaultRedirectPath),
+      ...rest
+    });
+  } else if (redirect) {
+    reactRoute.loader = () => redirectTo(redirect);
   }
-  
-
 
   if (layout) {
-
     return {
       lazy: layouts[layout],
       children: [reactRoute],
       ErrorBoundary
-    }as RouteObject;
+    } as RouteObject;
   }
 
   return reactRoute;
