@@ -187,7 +187,9 @@ export function transformElegantRouteToReactRoute(
           reactRoute.lazy = views[viewName];
         }
       }
-    }
+    } else if (!layout && !redirect) {
+      return Object.assign(reactRoute, rest);
+     }
   } catch (error: any) {
      console.error(\`Error transforming route "\${route.name}": \${error.toString()}\`);
     return {};
