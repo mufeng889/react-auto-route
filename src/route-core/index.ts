@@ -8,7 +8,6 @@ import { genDtsFile } from './dts';
 import { genImportsFile } from './imports';
 import { log } from './log';
 import { createPluginOptions } from './options';
-import { genPageFile } from './page';
 import { genRouteMapFile } from './routeMap';
 import { genTransformFile } from './transform';
 
@@ -28,15 +27,8 @@ export default class ElegantReactRouter {
   }
 
   setupFSWatcher() {
-    this.elegantRouter.setupFSWatcher(async (action, path) => {
+    this.elegantRouter.setupFSWatcher(async () => {
       log('The pages changed, regenerating the dts file and routes...', 'info', this.options.log);
-
-      // Handle file addition for tsx/jsx files
-      const isNewPageFile = action === 'add' && (path.endsWith('.tsx') || path.endsWith('.jsx'));
-      if (isNewPageFile) {
-        log(`The ${path} file has been added, regenerating the dts file and routes...`, 'info', this.options.log);
-        genPageFile(path, this.options);
-      }
 
       await this.generate();
       log('The dts file and routes have been regenerated successfully', 'success', this.options.log);
